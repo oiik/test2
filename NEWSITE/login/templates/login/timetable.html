@@ -1,0 +1,57 @@
+{% extends 'login/main.html' %}
+
+{% block title %}
+  <title>Расписание</title>
+
+  <style media="screen">
+    th {
+      background: #333333;
+      color: #fff;
+      font-size: 17px;
+
+    }
+    .tableboot {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+
+    }
+    .day {
+
+    }
+  </style>
+
+{% endblock %}
+
+{% block content %}
+<div class="tableboot">
+    <table class="table">
+      <tr>
+        <th colspan="6" class="day">Понедельник</th>
+      </tr>
+      <tr>
+        <th scope="col">Время</th>
+        <th scope="col">Предмет</th>
+        <th scope="col">Кабинет</th>
+        <th scope="col">Преподаватель</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+
+
+      {% for i in courses %}
+        <tr>
+          <td>{{i.time}}</td>
+          <td>{{i.name}}</td>
+          <td>{{i.room}}</td>
+          <td>{{i.teacher}}</td>
+          <td><a href="#">Изменить</a></td>
+          <td><a href="#">Удалить</a></td>
+        </tr>
+      {% endfor %}
+
+
+  </table>
+</div>
+
+{% endblock%}
