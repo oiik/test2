@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as djanjologin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-
+from django.core.exceptions import ObjectDoesNotExist
 
 def login(request):
     if request.user.is_authenticated:
@@ -62,11 +62,25 @@ def register(request):
 def groups(request):
     if request.method == 'POST':
         groupname = request.POST.get('groupname')
-        # group = Group.objects.get(name='groupname')
-        mgroup = Group.objects.get(name=groupname)
-        mgroup.user_set.add(request.user)
-        # request.user.groups.add(group)
-        return redirect("dl")
+        print("----------------------------------------------------------------------")
+        try:
+            print(Group.objects.get(name=groupname))
+
+        except ObjectDoesNotExist:
+            messages.error(request, "Такой группы нет")
+        else:
+            mgroup = Group.objects.get(name=groupname)
+            mgroup.user_set.add(request.user)
+            return redirect("dl")
+
+        # if groupname in Group.objects.all():
+        #     # group = Group.objects.get(name='groupname')
+        #     mgroup = Group.objects.get(name=groupname)
+        #     mgroup.user_set.add(request.user)
+        #     # request.user.groups.add(group)
+        #     return redirect("dl")
+        # else:
+        #     messages.error(request, "Error")
     return render(request, 'login/groups.html')
 
 

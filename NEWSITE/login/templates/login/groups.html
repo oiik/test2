@@ -91,6 +91,12 @@
 			padding: 5px;
 			margin-top: 5px;
 		}
+		.alert-danger {
+			/* margin-left: auto;
+    	margin-right: auto;
+			width: 50%; */
+			text-align: center;
+		}
 	</style>
 
 </head>
@@ -121,12 +127,23 @@
 				<!-- {% for message in messages%}
 					<p id="messages">{{message}}</p>
 				{% endfor %} -->
+
+				{% if messages %}
+						{% for message in messages %}
+						<div class="alert alert-danger">
+								<strong>{{message}}</strong>
+						</div>
+
+						{% endfor %}
+				{% endif %}
+
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links">
 						<!-- <p class="test">Нет аккаунта?</p>
 						<br> -->
 						<!-- <p>{{user.groups.exists}}</p> -->
-						<p class="test">Нет группы?</p> 
+
+						<p class="test">Нет группы?</p>
 						<a href="{% url 'create_gp' %}" class="ml-2">Создать группу</a>
 					</div>
 

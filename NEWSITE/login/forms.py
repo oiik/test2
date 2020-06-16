@@ -8,7 +8,7 @@ from django.forms.widgets import PasswordInput, TextInput
 
 # error_messages = {
 # 	'username': {
-# 		'required': ('Username is required'),
+# 		'required': ('Username231313 is required'),
 # 	},
 # 	'password': {
 # 		'required': ('Password is required'),
@@ -38,6 +38,7 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username','email','password1','password2']
+        
 
 
 class DeadForm(ModelForm):
