@@ -62,9 +62,10 @@ def register(request):
 def groups(request):
     if request.method == 'POST':
         groupname = request.POST.get('groupname')
-        print("----------------------------------------------------------------------")
         try:
-            print(Group.objects.get(name=groupname))
+            mgroup = Group.objects.get(name=groupname)
+            mgroup.user_set.add(request.user)
+            return redirect("dl")
 
         except ObjectDoesNotExist:
             messages.error(request, "Такой группы нет")
@@ -88,11 +89,18 @@ def groups(request):
 def create_gp(request):
     if request.method == 'POST':
         groupname = request.POST.get('groupname')
-        groupname, created = Group.objects.get_or_create(name=groupname)
 
-        groupname = Group.objects.get(name=groupname)
-        groupname.user_set.add(request.user)
-        return redirect("dl")
+        try:
+            mgroup = Group.objects.get(name=groupname)
+        except ObjectDoesNotExist:
+            groupname, created = Group.objects.get_or_create(name=groupname)
+            groupname = Group.objects.get(name=groupname)
+            groupname.user_set.add(request.user)
+            return redirect("dl")
+        else:
+            messages.error(request, "Такая группа уже существует")
+
+
     return render(request, 'login/create_gp.html')
 
 
