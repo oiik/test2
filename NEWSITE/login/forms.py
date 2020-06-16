@@ -40,15 +40,6 @@ class CreateUserForm(UserCreationForm):
         fields = ['username','email','password1','password2']
 
 
-
-
-
-class CreatedeadlinesForm(forms.ModelForm):
-    class Meta:
-        model = deadlines
-        fields = ["deadlines", "name", "subject", "teacher"]
-
-
 class DeadForm(ModelForm):
     class Meta:
         model = Dead

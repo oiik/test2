@@ -1,11 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
-
-#class MyGroups(models.Model):
-    #name = models.CharField(max_length=10, null=True)
-    #users =
 
 class Course(models.Model):
     TIMES = (('8.30-10.00','8.30-10.00'),
@@ -21,22 +15,7 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
-class deadlines(models.Model):
-    deadlines = models.DateTimeField()
-    name = models.CharField(max_length=250, null=True)
-    description = models.CharField(max_length=250, null=True)
-    subject = models.CharField(max_length=250, null=True)
-    teacher = models.CharField(max_length=150, null=True)
-    def __str__(self):
-        return self.name
 
-
-class Test(models.Model):
-    name = models.CharField(max_length=250, null=True)
-    group = models.CharField(max_length=30, null=True)
-
-    def __str__(self):
-        return self.name
 
 class Dead(models.Model):
     date = models.DateTimeField()
