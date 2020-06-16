@@ -47,3 +47,9 @@ class CreatedeadlinesForm(forms.ModelForm):
     class Meta:
         model = deadlines
         fields = ["deadlines", "name", "subject", "teacher"]
+
+
+class DeadForm(ModelForm):
+    class Meta:
+        model = Dead
+        fields = '__all__'

@@ -110,26 +110,24 @@
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" name="username" placeholder="Код группы" class="form-control">
+							<input type="text" name="groupname" placeholder="Код группы" class="form-control">
 						</div>
-						
-
 							<div class="d-flex justify-content-center mt-3 login_container">
 				 				<input class="btn login_btn" type="submit" value="Присоедениться">
 				   			</div>
 					</form>
 
 				</div>
-				{% for message in messages%}
+				<!-- {% for message in messages%}
 					<p id="messages">{{message}}</p>
-				{% endfor %}
+				{% endfor %} -->
 				<div class="mt-4">
-
 					<div class="d-flex justify-content-center links">
 						<!-- <p class="test">Нет аккаунта?</p>
 						<br> -->
-						<p>{{user.groups.exists}}</p>
-						<a href="{% url 'register' %}" class="ml-2">Создать группу</a>
+						<!-- <p>{{user.groups.exists}}</p> -->
+						<p class="test">Нет группы?</p> 
+						<a href="{% url 'create_gp' %}" class="ml-2">Создать группу</a>
 					</div>
 
 				</div>

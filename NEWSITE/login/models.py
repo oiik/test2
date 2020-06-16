@@ -18,8 +18,6 @@ class Course(models.Model):
     room = models.CharField(max_length=50, null=True)
     time = models.CharField(max_length=30, null = True, choices=TIMES)
     #group = models.ForeignKey(MyGroups, null=True, on_delete=models.SET_NULL)
-
-
     def __str__(self):
         return self.name
 
@@ -28,7 +26,23 @@ class deadlines(models.Model):
     name = models.CharField(max_length=250, null=True)
     description = models.CharField(max_length=250, null=True)
     subject = models.CharField(max_length=250, null=True)
-    teacher = models.CharField(max_length=150, null=True) 
-    group = models.CharField(max_length=150, null=True) 
+    teacher = models.CharField(max_length=150, null=True)
     def __str__(self):
         return self.name
+
+
+class Test(models.Model):
+    name = models.CharField(max_length=250, null=True)
+    group = models.CharField(max_length=30, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Dead(models.Model):
+    date = models.DateTimeField()
+    course = models.CharField(max_length=50, null=True)
+    task = models.CharField(max_length=250, null=True)
+    teacher = models.CharField(max_length=150, null=True)
+    group = models.CharField(max_length=30, null=True)
+    # def __str__(self):
+    #     return self.date

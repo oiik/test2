@@ -8,16 +8,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as djanjologin
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import Group
 
 
 def login(request):
     if request.user.is_authenticated:
-        # if request.user.groups.exists():
-        #     return redirect('timetable')
-        # else:
-        #     return redirect('groups')
-        return redirect('timetable')
+        if request.user.groups.exists():
+            return redirect('dl')
+        else:
+            return redirect('groups')
+        # return redirect('dl')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -26,15 +26,15 @@ def login(request):
 
             if user is not None:
                 djanjologin(request, user)
-                # return redirect('timetable')
                 if request.user.groups.exists():
-                    return redirect('timetable')
+                    return redirect('dl')
                 else:
                     return redirect('groups')
             else:
                 messages.info(request, 'Логин или пароль введен неверно')
         context = {}
         return render(request, 'login/login.html', context)
+
 
 def logoutUser(request):
     logout(request)
@@ -43,7 +43,7 @@ def logoutUser(request):
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('timetable')
+        return redirect('dl')
     else:
         form = CreateUserForm()
         if request.method == 'POST':
@@ -56,20 +56,33 @@ def register(request):
         context = {'form':form}
         return render(request, 'login/register.html', context)
 
+
+#Добавить доступ только для безгруппных
 @login_required(login_url='login')
 def groups(request):
+    if request.method == 'POST':
+        groupname = request.POST.get('groupname')
+        # group = Group.objects.get(name='groupname')
+        mgroup = Group.objects.get(name=groupname)
+        mgroup.user_set.add(request.user)
+        # request.user.groups.add(group)
+        return redirect("dl")
     return render(request, 'login/groups.html')
 
 @login_required(login_url='login')
-def create_gp():
+def create_gp(request):
+    if request.method == 'POST':
+        groupname = request.POST.get('groupname')
+        groupname, created = Group.objects.get_or_create(name=groupname)
 
-    
-    return render(request, 'login/create_gp')
+        groupname = Group.objects.get(name=groupname)
+        groupname.user_set.add(request.user)
+        return redirect("dl")
+    return render(request, 'login/create_gp.html')
 
 @login_required(login_url='login')
 def home(request):
     return render(request, 'login/home.html')
-
 
 @login_required(login_url='login')
 def timetable(request):
@@ -83,3 +96,33 @@ def adddeadlines(request):
         form2.save()
         return redirect('deadlines')
     return render(request, 'login/adddeadlines.html',{'form2':form2})
+
+
+@login_required(login_url='login')
+def dl(request):
+    if not request.user.groups.exists():
+        return redirect('groups')
+    else:
+        gp = request.user.groups.all()[0]
+        deads = Dead.objects.filter(group=gp).order_by('date')
+    return render(request, 'login/dl.html', {'deads':deads})
+
+
+@login_required(login_url='login')
+def createDead(request):
+    form = DeadForm()
+    gp = request.user.groups.all()[0]
+    if request.method == 'POST':
+        form = DeadForm(request.POST)
+        if form.is_valid():
+            form.group = gp
+            form.save()
+            return redirect('/')
+    context = {'form':form}
+    return render(request, 'login/createDead.html', context)
+
+def deleteDead(request, id):
+    Dead.objects.filter(id=id).delete()
+    gp = request.user.groups.all()[0]
+    deads = Dead.objects.filter(group=gp).order_by('date')
+    return render(request, 'login/dl.html', {'deads':deads})
